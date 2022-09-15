@@ -10,6 +10,7 @@ public class Main {
 		
 		// Vehicle vehicle = new Vehicle();
 		Car car = new Car();
+		car.go();
 		
 
 	}
