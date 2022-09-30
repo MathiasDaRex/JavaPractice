@@ -2,52 +2,76 @@ package atm;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
-public class Options extends Account{
+
+public class Options {
 
 	Scanner sc = new Scanner(System.in);
 	DecimalFormat df = new DecimalFormat("'$'###,##0.00");
 	
 	HashMap<Integer, Integer> data = new HashMap<Integer, Integer>();
 	
+//	List<Account> accList = new ArrayList<Account>(); 
+	
+	Account acc1 = new Account(1234, 4321);
+	Account acc2 = new Account(4321, 1234);
+	Account acc3 = new Account(2222, 2222);
+	Account acc4 = new Account(3333, 3333);
+	Account acc5 = new Account(4444, 4444);
+	Account acc6 = new Account(5555, 5555);
+	
+	
 	public void getLogin() throws IOException {
 		
-		int x = 1;
-		do {
+		List<Account> accList = new ArrayList<Account>();
+		accList.add(acc1);
+		accList.add(acc2);
+		accList.add(acc3);
+		accList.add(acc4);
+		accList.add(acc5);
+		accList.add(acc6);
+		int x = 0;
+		int y = 0;
+
 			try {
-				data.put(1234, 4321);
-				data.put(9999, 8888);
-				
+
 				System.out.println("Welcome to the ATM machine!");
 				System.out.println("Enter your ID: ");
-				setCustomerId(sc.nextInt());
-				
-				System.out.println("Enter your PIN: ");
-				setPinNum(sc.nextInt());
-				
+				int tempId = sc.nextInt();
+				for (Account item : accList) {
+					if(tempId == item.getCustomerId()) {
+						System.out.println("Enter your PIN: ");
+						x++;
+						int tempPin = sc.nextInt();
+						for (Account item2 : accList) {
+							if(tempPin == item2.getPinNum()) {
+								y++;
+							}
+						}
+					}
+					
+				}
+				if(x==1 && y==1) {
+					for (Account item : accList) {
+						if(item.getCustomerId() == tempId) {
+							getAccountType(item);
+						}
+					}
+				} else {
+					System.out.println("Wrong credentials...please try again");
+					getLogin();
+				}
 			} catch (Exception e) {
-				System.out.println("\n" + "Invalid characters. Write only numbers please+" + "\n");
-				x = 2;
-			}
-			
-			int cID = getCustomerId();
-			int cPIN = getPinNum();
-			if(data.containsKey(cID) && data.get(cID) == cPIN) {
-				getAccountType();
-			} else {
-				System.out.println("Wrong ID or PIN");
-				System.out.println("Please enter the right data.");
-				System.out.println();
+				System.out.println("\n" + "Invalid characters. Write only numbers please!" + "\n");
 				getLogin();
 			}
-			
-		} while (x == 1);
-		
 	}
 
-	private void getAccountType() {
+	private void getAccountType(Account acc) throws IOException {
 		System.out.println("Select the Account you want to acces: ");
 		System.out.println(" Type 1 - Checking account");
 		System.out.println(" Type 2 - Savings account");
@@ -56,14 +80,15 @@ public class Options extends Account{
 		int selected = sc.nextInt();
 		switch (selected) {
 		case 1:
-			getChecking();
+			getChecking(acc);
 			break;
 		case 2:
-			getSavings();
+			getSavings(acc);
 			break;
 		case 3:
 			System.out.println("Thank you for using this ATM machine. \n");
 			System.out.println("Have a nice day!");
+			getLogin();
 			break;
 		default:
 			System.out.println("\n Invalid choice! \n");
@@ -71,7 +96,7 @@ public class Options extends Account{
 		}
 	}
 
-	private void getSavings() {
+	private void getSavings(Account acc) throws IOException {
 		System.out.println(" Saving account: ");
 		System.out.println(" Type 1 - View balance");
 		System.out.println(" Type 2 - Withdraw  funds");
@@ -82,31 +107,32 @@ public class Options extends Account{
 		
 		switch (choice) {
 		case 1:
-			System.out.println(" Checking account balance: "+ df.format(getSavingBalance()));
-			getAccountType();
+			System.out.println(" Saving account balance: "+ df.format(acc.getSavingBalance()));
+			getAccountType(acc);
 			break;
 		case 2:
-			getSavingWithdrawInput();
-			getAccountType();
+			acc.getSavingWithdrawInput();
+			getAccountType(acc);
 			break;
 		case 3:
-			getSavingDepositInput();
-			getAccountType();
+			acc.getSavingDepositInput();
+			getAccountType(acc);
 			break;
 		case 4:
 			System.out.println("Thank you for using this ATM machine. \n");
 			System.out.println("Have a nice day!");
+			getLogin();
 			break;
 
 		default:
 			System.out.println("\n Invalid choice! \n");
-			getAccountType();
+			getAccountType(acc);
 			break;
 		}
 		
 	}
 
-	private void getChecking() {
+	private void getChecking(Account acc) throws IOException {
 		System.out.println(" Checking account: ");
 		System.out.println(" Type 1 - View balance");
 		System.out.println(" Type 2 - Withdraw  funds");
@@ -117,16 +143,16 @@ public class Options extends Account{
 		
 		switch (choice) {
 		case 1:
-			System.out.println(" Checking account balance: "+ df.format(getCheckingBalance()));
-			getAccountType();
+			System.out.println(" Checking account balance: "+ df.format(acc.getCheckingBalance()));
+			getAccountType(acc);
 			break;
 		case 2:
-			getCheckingWithdrawInput();
-			getAccountType();
+			acc.getCheckingWithdrawInput();
+			getAccountType(acc);
 			break;
 		case 3:
-			getCheckingDepositInput();;
-			getAccountType();
+			acc.getCheckingDepositInput();;
+			getAccountType(acc);
 			break;
 		case 4:
 			System.out.println("Thank you for using this ATM machine. \n");
@@ -134,7 +160,7 @@ public class Options extends Account{
 			break;
 		default:
 			System.out.println("\n Invalid choice! \n");
-			getAccountType();
+			getAccountType(acc);
 			break;
 		}
 		

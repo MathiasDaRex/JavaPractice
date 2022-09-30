@@ -13,6 +13,12 @@ public class Account {
 	Scanner sc = new Scanner(System.in);
 	DecimalFormat mf = new DecimalFormat("'$'###,##0.00");
 	
+	public Account(int customerId, int pinNum) {
+		super();
+		this.customerId = customerId;
+		this.pinNum = pinNum;
+	}
+
 	public int getCustomerId() {
 		return customerId;
 	}
