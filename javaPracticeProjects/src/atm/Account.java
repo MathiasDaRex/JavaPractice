@@ -13,6 +13,7 @@ public class Account {
 	Scanner sc = new Scanner(System.in);
 	DecimalFormat mf = new DecimalFormat("'$'###,##0.00");
 	
+	
 	public Account(int customerId, int pinNum) {
 		super();
 		this.customerId = customerId;
@@ -115,5 +116,15 @@ public class Account {
 		} else {
 			System.out.println("Balance cannot be negative. " + "\n");
 		}
-	}	
+	}
+	
+	public boolean getTransferAmount(int amount) {
+		if(getCheckingBalance()>=amount) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
 }
